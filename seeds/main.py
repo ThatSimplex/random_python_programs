@@ -7,8 +7,7 @@ def main():
     choice = input()
 
     while choice != 'q':
-        board.update()
-        # choice = input()
+        board.update() 
         time.sleep(0.1)
 
 main()

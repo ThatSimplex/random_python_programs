@@ -1,8 +1,9 @@
+import pickle
 from cell import Cell
 from random import randint
 
 class Board:
-    def __init__(self, rows, columns):
+    def __init__(self, rows, columns, load):
         self._rows = rows
         self._columns = columns
         self._grid = [[Cell() for column in range(0, columns)] for row in range(0, rows)]
@@ -11,8 +12,8 @@ class Board:
             for column in range(0, columns):
                 self.findNeighbour(column, row)
 
-        self.generate()
-        self.drawBoard()
+        if not load:
+            self.generate()
 
     def update(self):
         turnOn = []
@@ -126,3 +127,15 @@ class Board:
             cell._neighbours.append(self._grid[y+1][x-1])
             cell._neighbours.append(self._grid[y][x-1])
             cell._neighbours.append(self._grid[y-1][x-1])
+
+    def saveGrid(self, filename):
+        file = open(filename, 'wb')
+
+        pickle.dump(self._grid, file)
+        file.close()
+
+    def loadGrid(self, filename):
+        with open(filename, 'rb') as f:
+            grid = pickle.load(f)
+        
+        self._grid = grid
