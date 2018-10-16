@@ -15,8 +15,9 @@ class Board:
         self.drawBoard()
 
     def update(self):
-        born = []
-        die = []
+        turnOn = []
+        dying = []
+        turnOff = []
 
         for row in range(0, self._rows):
             for column in range(0, self._columns):
@@ -24,15 +25,20 @@ class Board:
 
                 aliveNeighbours = cell.aliveNeighbours()
 
-                if aliveNeighbours == 2 and not cell.isAlive():
-                    born.append(cell)
-                elif cell.isAlive():
-                    die.append(cell)
+                if cell.isAlive():
+                    dying.append(cell)
+                elif aliveNeighbours == 2 and cell._status == 'off':
+                    turnOn.append(cell)
+                elif cell._status == 'dying':
+                    turnOff.append(cell)
         
-        for cell in born:
+        for cell in turnOn:
             cell.changeStatus()
         
-        for cell in die:
+        for cell in turnOff:
+            cell.changeStatus()
+
+        for cell in dying:
             cell.changeStatus()
         
         self.drawBoard()
@@ -50,11 +56,23 @@ class Board:
     def generate(self):
         for row in range(0, self._rows):
             for column in range(0, self._columns):
-                seed = randint(0, 9)
+                seed = randint(0, 3)
                 cell = self._grid[row][column]
-
+                
                 if seed == 0:
                     cell.changeStatus()
+
+    def findOn(self):
+        numDying = 0
+
+        for row in range(0, self._rows):
+            for column in range(0, self._columns):
+                cell = self._grid[row][column]
+
+                if cell._status == 'dying':
+                    numDying += 1
+
+        return numDying
 
     def findNeighbour(self, x, y):
         cell = self._grid[y][x]
