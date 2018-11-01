@@ -45,7 +45,7 @@ class Board:
         self.drawBoard()
 
     def drawBoard(self):
-        print('\n'*50)
+        print('\n'*80)
 
         for row in range(0, self._rows):
             for column in range(0, self._columns):
@@ -138,4 +138,9 @@ class Board:
         with open(filename, 'rb') as f:
             grid = pickle.load(f)
         
+        rows = len(grid)
+        columns = len(grid[0])
+
         self._grid = grid
+        self._rows = rows
+        self._columns = columns

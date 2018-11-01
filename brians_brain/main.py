@@ -3,20 +3,20 @@ import sys
 from board import Board
 
 def main():
-    sys.setrecursionlimit(30000)
+    rows = 40
+    columns = 120
 
-    load = input('Do you want to load a board from a file? (y/n)')
+    sys.setrecursionlimit(rows * columns * 5)
+
+    load = input('Do you want to load a board from a file? (y/n) ')
 
     if load.lower() == 'y':
-        board = Board(30, 60, True)
-    
+        board = Board(rows, columns, True)
         filename = input('What is the filename of the file you want to load from? ')
         board.loadGrid(filename)
     else:
-        board = Board(30, 60, False)
-
+        board = Board(rows, columns, False)
         board.drawBoard()
-
         save = input('Do you want to save this board? (y/n) ')
 
         if save.lower() == 'y':
@@ -31,7 +31,7 @@ def main():
 
         if numDying == 0:
             break
-
+        
         time.sleep(0.1)
 
 main()

@@ -13,7 +13,26 @@ class Board:
 
         self.generate()
         self.drawBoard()
+    
+    def generate(self):
+        for row in range(0, self._rows):
+            for column in range(0, self._columns):
+                seed = randint(0, 9)
+                cell = self._grid[row][column]
 
+                if seed == 0:
+                    cell.changeStatus()
+    
+    def drawBoard(self):
+        print('\n'*50)
+
+        for row in range(0, self._rows):
+            for column in range(0, self._columns):
+                cell = self._grid[row][column]
+                print(cell.getSymbol(), end='')
+            
+            print()
+    
     def update(self):
         born = []
         die = []
@@ -24,10 +43,10 @@ class Board:
 
                 aliveNeighbours = cell.aliveNeighbours()
 
-                if aliveNeighbours == 2 and not cell.isAlive():
-                    born.append(cell)
-                elif cell.isAlive():
+                if cell.isAlive():
                     die.append(cell)
+                elif aliveNeighbours == 2 and not cell.isAlive():
+                    born.append(cell)
         
         for cell in born:
             cell.changeStatus()
@@ -36,26 +55,7 @@ class Board:
             cell.changeStatus()
         
         self.drawBoard()
-
-    def drawBoard(self):
-        print('\n'*90)
-
-        for row in range(0, self._rows):
-            for column in range(0, self._columns):
-                cell = self._grid[row][column]
-                print(cell.getSymbol(), end='')
-            
-            print()
     
-    def generate(self):
-        for row in range(0, self._rows):
-            for column in range(0, self._columns):
-                seed = randint(0, 9)
-                cell = self._grid[row][column]
-
-                if seed == 0:
-                    cell.changeStatus()
-
     def findNeighbour(self, x, y):
         cell = self._grid[y][x]
         
@@ -69,8 +69,8 @@ class Board:
             cell._neighbours.append(self._grid[y][x+1])
         elif x == self._columns-1 and y == self._rows-1:
             cell._neighbours.append(self._grid[y][x-1])
-            cell._neighbours.append(self._grid[y-11][x-11])
-            cell._neighbours.append(self._grid[y-11][x])
+            cell._neighbours.append(self._grid[y-1][x-1])
+            cell._neighbours.append(self._grid[y-1][x])
         elif x == self._columns-1 and y == 0:
             cell._neighbours.append(self._grid[y][x-1])
             cell._neighbours.append(self._grid[y+1][x-1])
